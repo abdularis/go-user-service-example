@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: go-user-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: go-user-app
+  template:
+    metadata:
+      labels:
+        app: go-user-app
+    spec:
+      containers:
+        - name: go-user-service-container
+          image: aris10/go-user-service:latest
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 80
+          env:
+            - name: HOST_PORT
+              value: "80"
+            - name: DB_HOST
+              value: "mysql.default.svc.cluster.local"
+            - name: DB_PORT
+              value: "3306"
+            - name: DB_NAME
+              value: go_user_service
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: user
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: password
+            - name: JWT_SECRET_ACCESS_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: go-user-app-secret
+                  key: jwtSecretAccessToken
+            - name: JWT_SECRET_REFRESH_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: go-user-app-secret
+                  key:
+                    jwtSecretRefreshToken
