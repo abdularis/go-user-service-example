@@ -1,10 +1,14 @@
 # Golang User Service 
 
-![](diagram-user-service-example.jpg)
+![](deployment.jpg)
 
 ## Api Documentation
 
 head over to https://documenter.getpostman.com/view/24034380/2s8YmULfBm
+
+Credentials:
+- username: admin
+- password: admin
 
 ## Deployment
 
